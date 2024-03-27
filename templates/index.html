@@ -3,55 +3,59 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToDo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Flask ToDo App</title>
   </head>
   <body>
-    <h1>My Minimal Flask ToDo App</h1>
-    <form action="/add" method="POST">
-      <p>
-        <label for="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter task..."
-          maxlength="60"
-          required
-        />
-      </p>
-      <p>
-        <label for="description">Description</label>
-        <input
-          type="text"
-          name="description"
-          placeholder="Enter description..."
-          maxlength="255"
-          required/>
-      </p>
-      <p>
-        <label for="due-date">Due Date</label>
-        <input type="date" name="due-date" min="{{today.strftime('%Y-%m-%d')}}" required>
-      </p>
+    <header>
+      <h1>My Minimal Flask ToDo App</h1>
+    </header>
+    <section>
+      <form action="/add" method="POST">
+        <div>
+          <label for="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter task..."
+            maxlength="60"
+            required
+          />
+        </div>
+        <div>
+          <label for="description">Description</label>
+          <input
+            type="text"
+            name="description"
+            placeholder="Enter description..."
+            maxlength="255"
+            required/>
+        </div>
+        <div>
+          <label for="due-date">Due Date</label>
+          <input type="date" name="due-date" min="{{today.strftime('%Y-%m-%d')}}" required>
+        </div>
 
-      <button type="submit">Add Task</button>
-    </form>
-    <ul>
-      {% for task in task_list %}
-      <li>
-        {% if task.completed %}
-          <h2><del>{{ task.name }}</del></h2>
-          <p><del>Created at: <em>{{ task.created_at.strftime('%A, %d de %B de %Y') }}</em></del></p>
-          <p><del>{{ task.description }}</del></p>
-          <p>Deadline <em>{{ task.created_at.strftime('%A, %d de %B de %Y') }}</em></p>
-        {% else %}
-          <h2>{{ task.content }}</h2>
-          <p>Created at <em>{{ task.created_at.strftime('%A, %d de %B de %Y') }}</em></p>
-          <p>{{ task.description }}</p>
-          <p>Deadline <em>{{ task.created_at.strftime('%A, %d de %B de %Y') }}</em></p>
-          <a href="/complete/{{ task.id }}">Complete</a>
-        {% endif %}
-        <a href="/delete/{{ task.id }}">Delete</a>
-      </li>
-      {% endfor %}
-    </ul>
+        <input type="submit"/ value="Add Task">
+      </form>
+    </section>
+    <main>
+        {% for task in task_list %}
+        <article>
+          {% if task.completed %}
+          <del><em>Deadline: {{ task.created_at.strftime('%A, %d de %B de %Y') }}</em>
+            <h2>{{ task.name }}</h2>
+            <p>{{ task.description }}</p>
+          </del>
+          {% else %}
+            <em>Deadline: {{ task.created_at.strftime('%A, %d de %B de %Y') }}</em>
+            <h2>{{ task.name }}</h2>
+            <p>{{ task.description }}</p>
+            <a href="/complete/{{ task.id }}">Complete</a>
+          {% endif %}
+          <a href="/delete/{{ task.id }}" class="delete">Delete</a>
+        </article>
+        {% endfor %}
+    </main>
   </body>
 </html>
